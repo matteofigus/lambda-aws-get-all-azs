@@ -1,0 +1,18 @@
+{
+  "name": "lambda-aws-get-all-azs",
+  "version": "1.0.0",
+  "description": "Lambda to get the list of all the azs",
+  "main": "index.js",
+  "scripts": {
+    "create": "npm run zip && aws lambda create-function --function-name get-all-azs --zip-file fileb://package.zip --handler index.handler --runtime nodejs10.x --role arn:aws:iam::$(aws sts get-caller-identity --output text --query 'Account'):role/lambda-cli-role --timeout 900",
+    "deploy": "npm run zip && npm run upload",
+    "start": "aws lambda invoke --function-name get-all-azs /dev/stdout",
+    "upload": "aws lambda update-function-code --function-name get-all-azs --zip-file fileb://package.zip",
+    "zip": "zip package.zip index.js package.json"
+  },
+  "author": "Matteo Figus",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.498.0"
+  }
+}
